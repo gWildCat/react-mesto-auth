@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import useValidation from '../hooks/useValidation';
 import Sign from './Sign';
 
@@ -53,9 +54,9 @@ const Register = ({ onRegisterNewUser, isLoading }) => {
       </Sign>
       <p className="main__text">
         Уже зарегистрированы?{' '}
-        <a className="main__link" href="/login">
+        <Link className="main__link" to="/sign-in">
           Войти
-        </a>
+        </Link>
       </p>
     </div>
   );

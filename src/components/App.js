@@ -12,6 +12,9 @@ import ConfirmDeletePopup from './ConfirmDeletePopup';
 import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import * as auth from '../utils/Auth';
 
 function App() {
   // Переменные состояния
@@ -25,6 +28,10 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Хук useNavigate
+  const navigate = useNavigate();
 
   // Обработка ошибок
   function handleError(error) {
@@ -164,35 +171,69 @@ function App() {
 
   // Обработчик регистрации нового пользователя
   function handleRegisterNewUser(userData) {
-    console.log(userData);
+    auth.register(userData).then((data) => console.log(data));
   }
   // Обработчик входа пользователя в систему
   function handleLogin(userData) {
-    console.log(userData);
+    auth.authorize(userData).then((data) => {
+      if (data.token) {
+        setIsLoggedIn(true);
+        navigate('/');
+      }
+    });
+  }
+  // Обработчик проверки токена
+  const handleTokenCheck = () => {
+    if (localStorage.getItem('token')) {
+      const token = localStorage.getItem('token');
+      auth.getContent(token).then(() => {
+        setIsLoggedIn(true);
+        navigate('/');
+      });
+    }
+  };
+  // Проверка токена при загрузке страницы
+  useEffect(() => {
+    handleTokenCheck();
+  }, []);
+  // Обработчик выхода пользователя из системы
+  function handleLogout() {
+    localStorage.removeItem('token');
+    navigate('/sign-in');
   }
 
   return (
     <div className="app">
       <div className="page">
-        <Header />
+        <Header onLogout={handleLogout} />
         <CurrentUserContext.Provider value={currentUser}>
-          <Main
-            cards={cards}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDeleteClick}
-          />
-          {/* <Register isLoading={isLoading} onRegisterNewUser={handleRegisterNewUser} /> */}
-          {/* <Login isLoading={isLoading} onLogin={handleLogin} /> */}
-          <InfoTooltip
-            isOpen={isTooltipOpen}
-            isSuccess={true}
-            onOverlayClick={handleOverlayClick}
-            onClose={closeAllPopups}
-          />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <Main
+                    cards={cards}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onCardClick={handleCardClick}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDeleteClick}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={<Register isLoading={isLoading} onRegisterNewUser={handleRegisterNewUser} />}
+            />
+            <Route
+              path="/sign-in"
+              element={<Login isLoading={isLoading} onLogin={handleLogin} />}
+            />
+            <Route path="*" element={<Login isLoading={isLoading} onLogin={handleLogin} />} />
+          </Routes>
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
@@ -200,35 +241,41 @@ function App() {
             onOverlayClick={handleOverlayClick}
             isLoading={isLoading}
           />
+          <InfoTooltip
+            isOpen={isTooltipOpen}
+            isSuccess={true}
+            onOverlayClick={handleOverlayClick}
+            onClose={closeAllPopups}
+          />
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+            onOverlayClick={handleOverlayClick}
+            isLoading={isLoading}
+          />
+          <ConfirmDeletePopup
+            isOpen={isConfirmDeletePopupOpen}
+            onClose={closeAllPopups}
+            cardToDelete={cardToDelete}
+            onConfirmDelete={handleCardConfirmDelete}
+            onOverlayClick={handleOverlayClick}
+            isLoading={isLoading}
+          />
+          <EditAvatarPopup
+            onClose={closeAllPopups}
+            isOpen={isEditAvatarPopupOpen}
+            onUpdateAvatar={handleUpdateAvatar}
+            onOverlayClick={handleOverlayClick}
+            isLoading={isLoading}
+          />
+          <ImagePopup
+            selectedCard={selectedCard}
+            onClose={closeAllPopups}
+            onOverlayClick={handleOverlayClick}
+          />
+          <Footer />
         </CurrentUserContext.Provider>
-        <Footer />
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}
-          onOverlayClick={handleOverlayClick}
-          isLoading={isLoading}
-        />
-        <ConfirmDeletePopup
-          isOpen={isConfirmDeletePopupOpen}
-          onClose={closeAllPopups}
-          cardToDelete={cardToDelete}
-          onConfirmDelete={handleCardConfirmDelete}
-          onOverlayClick={handleOverlayClick}
-          isLoading={isLoading}
-        />
-        <EditAvatarPopup
-          onClose={closeAllPopups}
-          isOpen={isEditAvatarPopupOpen}
-          onUpdateAvatar={handleUpdateAvatar}
-          onOverlayClick={handleOverlayClick}
-          isLoading={isLoading}
-        />
-        <ImagePopup
-          selectedCard={selectedCard}
-          onClose={closeAllPopups}
-          onOverlayClick={handleOverlayClick}
-        />
       </div>
     </div>
   );

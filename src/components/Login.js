@@ -22,7 +22,6 @@ const Login = ({ onLogin, isLoading }) => {
         btnTitle={!isLoading ? 'Войти' : 'Вход...'}
         onSubmit={handleSubmit}
         isValid={isValid}
-        isLoading={isLoading}
       >
         <input
           id="email"

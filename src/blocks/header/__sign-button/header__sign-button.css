@@ -1,0 +1,17 @@
+.header__sign-button {
+  appearance: none;
+  border: none;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 500;
+  color: #fff;
+  background: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in;
+  margin: 0;
+  padding: 0;
+}
+
+.header__sign-button:hover {
+  opacity: 0.8;
+}

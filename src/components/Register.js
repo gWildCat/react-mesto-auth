@@ -23,7 +23,6 @@ const Register = ({ onRegisterNewUser, isLoading }) => {
         btnTitle={!isLoading ? 'Зарегистрироваться' : 'Регистрация...'}
         onSubmit={handleSubmit}
         isValid={isValid}
-        isLoading={isLoading}
       >
         <input
           id="email"

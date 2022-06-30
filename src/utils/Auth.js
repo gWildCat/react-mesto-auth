@@ -11,7 +11,7 @@ export const register = ({email, password}) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({password, email}),
-    }).then((res) => handleResponse(res))
+    }).then((res) => handleResponse(res));
 };
 
 export const authorize = ({email, password}) => {
@@ -21,12 +21,7 @@ export const authorize = ({email, password}) => {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({password, email}),
-    }).then((res) => handleResponse(res)).then((data) => {
-        if (data.token) {
-            localStorage.setItem('token', data.token);
-            return data;
-        }
-    })
+    }).then((res) => handleResponse(res));
 };
 
 export const getContent = (token) => {

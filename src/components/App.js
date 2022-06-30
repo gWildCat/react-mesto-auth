@@ -23,12 +23,14 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setConfirmDeletePopupOpen] = useState(false);
   const [isTooltipOpen, setTooltipOpen] = useState(false);
+  const [isTooltipSuccess, setIsTooltipSuccess] = useState(false);
   const [cardToDelete, setCardToDelete] = useState({});
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   // Хук useNavigate
   const navigate = useNavigate();
@@ -36,7 +38,8 @@ function App() {
   // Обработка ошибок
   function handleError(error) {
     console.error(`🔥ERROR: ${error}`);
-    alert(`ОШИБКА: ${error}`);
+    setIsTooltipSuccess(false);
+    setTooltipOpen(true);
   }
   // Обработчик закрытия попапа по Escape
   const handleEscClosePopup = useCallback((evt) => evt.key === 'Escape' && closeAllPopups(), []);
@@ -171,41 +174,51 @@ function App() {
 
   // Обработчик регистрации нового пользователя
   function handleRegisterNewUser(userData) {
-    auth.register(userData).then((data) => console.log(data));
+    setIsLoading(true);
+    auth.register(userData).then(() => {
+      setIsTooltipSuccess(true);
+      setTooltipOpen(true);
+      navigate('/sign-in');
+    }).catch((error) => handleError(error)).finally(() => setIsLoading(false));
   }
   // Обработчик входа пользователя в систему
   function handleLogin(userData) {
+    setIsLoading(true);
     auth.authorize(userData).then((data) => {
       if (data.token) {
+        localStorage.setItem('token', data.token);
         setIsLoggedIn(true);
         navigate('/');
       }
-    });
+    }).catch((error) => handleError(error)).finally(() => setIsLoading(false));
   }
   // Обработчик проверки токена
   const handleTokenCheck = () => {
     if (localStorage.getItem('token')) {
       const token = localStorage.getItem('token');
-      auth.getContent(token).then(() => {
+      auth.getContent(token).then(({data}) => {
+        setUserEmail(data.email);
         setIsLoggedIn(true);
         navigate('/');
-      });
+      }).catch((error) => handleError(error));
     }
   };
-  // Проверка токена при загрузке страницы
+  // Проверка токена, получение email пользователя
   useEffect(() => {
     handleTokenCheck();
-  }, []);
+  }, [isLoggedIn]);
   // Обработчик выхода пользователя из системы
   function handleLogout() {
     localStorage.removeItem('token');
     navigate('/sign-in');
+    setIsLoggedIn(false);
+    setUserEmail('');
   }
 
   return (
     <div className="app">
       <div className="page">
-        <Header onLogout={handleLogout} />
+        <Header onLogout={handleLogout} isLoggedIn={isLoggedIn} userEmail={userEmail} />
         <CurrentUserContext.Provider value={currentUser}>
           <Routes>
             <Route
@@ -243,7 +256,7 @@ function App() {
           />
           <InfoTooltip
             isOpen={isTooltipOpen}
-            isSuccess={true}
+            isSuccess={isTooltipSuccess}
             onOverlayClick={handleOverlayClick}
             onClose={closeAllPopups}
           />

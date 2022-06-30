@@ -48,6 +48,16 @@
 
 @import url(./blocks/header/__logo/header__logo.css);
 
+@import url(./blocks/header/__user-email/header__user-email.css);
+
+@import url(./blocks/header/__sign-button/header__sign-button.css);
+
+@import url(./blocks/header/__menu/header__menu.css);
+
+@import url(./blocks/header/__menu/_visible/header__menu_visible.css);
+
+@import url(./blocks/header/__menu-button/header__menu-button.css);
+
 @import url(./blocks/main/main.css);
 
 @import url(./blocks/main/__link/main__link.css);
@@ -81,6 +91,8 @@
 @import url(./blocks/popup/__message/popup__message.css);
 
 @import url(./blocks/popup/__status-image/popup__status-image.css);
+
+@import url(./blocks/popup/_on-top/popup_on-top.css);
 
 @import url(./blocks/profile/profile.css);
 

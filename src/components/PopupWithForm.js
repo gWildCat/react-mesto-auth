@@ -22,7 +22,9 @@ const PopupWithForm = ({
           <h2 className="form__header">{title}</h2>
           {children}
           <button
-            className={`${!isValid && 'form__save-button_inactive'} form__save-button`}
+            className={`${
+              !isValid && 'form__save-button_inactive'
+            } form__save-button form__save-button_theme_light`}
             title={btnTitle}
             type="submit"
             disabled={!isValid}

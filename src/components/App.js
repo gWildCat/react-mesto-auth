@@ -31,6 +31,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Хук useNavigate
   const navigate = useNavigate();
@@ -175,32 +176,43 @@ function App() {
   // Обработчик регистрации нового пользователя
   function handleRegisterNewUser(userData) {
     setIsLoading(true);
-    auth.register(userData).then(() => {
-      setIsTooltipSuccess(true);
-      setTooltipOpen(true);
-      navigate('/sign-in');
-    }).catch((error) => handleError(error)).finally(() => setIsLoading(false));
+    auth
+      .register(userData)
+      .then(() => {
+        setIsTooltipSuccess(true);
+        setTooltipOpen(true);
+        navigate('/sign-in');
+      })
+      .catch((error) => handleError(error))
+      .finally(() => setIsLoading(false));
   }
   // Обработчик входа пользователя в систему
   function handleLogin(userData) {
     setIsLoading(true);
-    auth.authorize(userData).then((data) => {
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        setIsLoggedIn(true);
-        navigate('/');
-      }
-    }).catch((error) => handleError(error)).finally(() => setIsLoading(false));
+    auth
+      .authorize(userData)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          setIsLoggedIn(true);
+          navigate('/');
+        }
+      })
+      .catch((error) => handleError(error))
+      .finally(() => setIsLoading(false));
   }
   // Обработчик проверки токена
   const handleTokenCheck = () => {
     if (localStorage.getItem('token')) {
       const token = localStorage.getItem('token');
-      auth.getContent(token).then(({data}) => {
-        setUserEmail(data.email);
-        setIsLoggedIn(true);
-        navigate('/');
-      }).catch((error) => handleError(error));
+      auth
+        .getContent(token)
+        .then(({ data }) => {
+          setUserEmail(data.email);
+          setIsLoggedIn(true);
+          navigate('/');
+        })
+        .catch((error) => handleError(error));
     }
   };
   // Проверка токена, получение email пользователя
@@ -212,13 +224,24 @@ function App() {
     localStorage.removeItem('token');
     navigate('/sign-in');
     setIsLoggedIn(false);
+    setIsMenuOpen(false);
     setUserEmail('');
+  }
+  // Открытие / закрытие меню
+  function toggleMenu() {
+    isMenuOpen ? setIsMenuOpen(false) : setIsMenuOpen(true);
   }
 
   return (
     <div className="app">
-      <div className="page">
-        <Header onLogout={handleLogout} isLoggedIn={isLoggedIn} userEmail={userEmail} />
+      <div className={`page ${isLoggedIn && !isMenuOpen && 'page_shifted'}`}>
+        <Header
+          onLogout={handleLogout}
+          isLoggedIn={isLoggedIn}
+          userEmail={userEmail}
+          toggleMenu={toggleMenu}
+          isMenuOpen={isMenuOpen}
+        />
         <CurrentUserContext.Provider value={currentUser}>
           <Routes>
             <Route

@@ -30,7 +30,7 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace, onOverlayClick, isLoading 
         id="title"
         name="name"
         type="text"
-        className="form__input"
+        className="form__input form__input_theme_light"
         placeholder="Название"
         aria-label="Название"
         required
@@ -44,7 +44,7 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace, onOverlayClick, isLoading 
         id="link"
         name="link"
         type="url"
-        className="form__input"
+        className="form__input form__input_theme_light"
         placeholder="Ссылка на картинку"
         aria-label="Ссылка на картинку"
         required

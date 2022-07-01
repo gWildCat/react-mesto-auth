@@ -7,3 +7,9 @@
 .form__save-button_theme_dark:hover {
   opacity: 0.85;
 }
+
+@media screen and (max-width: 619px) {
+  .form__save-button_theme_dark {
+    margin-top: 173px;
+  }
+}

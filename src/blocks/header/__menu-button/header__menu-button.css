@@ -6,10 +6,5 @@
   background: center no-repeat url(../../../images/header-burger-btn.svg);
   width: 24px;
   height: 21px;
-}
-
-@media screen and (max-width: 619px) {
-  .header__menu-button {
-    display: block;
-  }
+  transition: transform 0.2s ease-in;
 }

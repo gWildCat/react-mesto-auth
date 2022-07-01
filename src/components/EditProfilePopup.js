@@ -33,7 +33,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, onOverlayClick, isLoa
         id="name"
         name="name"
         type="text"
-        className="form__input"
+        className="form__input form__input_theme_light"
         placeholder="Имя"
         aria-label="Имя"
         required
@@ -47,7 +47,7 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, onOverlayClick, isLoa
         id="about"
         name="about"
         type="text"
-        className="form__input"
+        className="form__input form__input_theme_light"
         placeholder="Должность"
         aria-label="Должность"
         required

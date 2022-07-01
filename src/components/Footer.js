@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Footer = () => {
   // Определение текущего года
@@ -6,8 +6,8 @@ const Footer = () => {
 
   return (
     <>
-      <footer className='footer'>
-        <p className='footer__copyright'>&copy; {currentYear} Mesto Russia</p>
+      <footer className="footer">
+        <p className="footer__copyright">&copy; {currentYear} Mesto Russia</p>
       </footer>
     </>
   );

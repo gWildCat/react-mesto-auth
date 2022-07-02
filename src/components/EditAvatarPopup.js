@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import useValidation from '../hooks/useValidation';
 import PopupWithForm from './PopupWithForm';
 
-const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar, onOverlayClick, isLoading }) => {
+const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar, isLoading }) => {
   // Валидация формы
   const { values, errors, isValid, handleChange, resetForms } = useValidation('.form');
 
@@ -41,7 +41,6 @@ const EditAvatarPopup = ({ isOpen, onClose, onUpdateAvatar, onOverlayClick, isLo
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      onOverlayClick={onOverlayClick}
       isValid={isValid}
     >
       <input

@@ -32,40 +32,14 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   // Хук useNavigate
   const navigate = useNavigate();
-
   // Обработка ошибок
   function handleError(error) {
     console.error(`🔥ERROR: ${error}`);
     setIsTooltipSuccess(false);
     setTooltipOpen(true);
   }
-  // Обработчик закрытия попапа по Escape
-  const handleEscClosePopup = useCallback((evt) => evt.key === 'Escape' && closeAllPopups(), []);
-  // Установка и снятие слушателя закрытия попапа по Escape
-  useEffect(() => {
-    if (
-      isEditProfilePopupOpen ||
-      isAddPlacePopupOpen ||
-      isEditAvatarPopupOpen ||
-      isConfirmDeletePopupOpen ||
-      selectedCard
-    ) {
-      document.addEventListener('keydown', handleEscClosePopup);
-    } else {
-      document.removeEventListener('keydown', handleEscClosePopup);
-    }
-  }, [
-    isEditProfilePopupOpen,
-    isAddPlacePopupOpen,
-    isEditAvatarPopupOpen,
-    isConfirmDeletePopupOpen,
-    selectedCard,
-    handleEscClosePopup,
-  ]);
-
   // Запись данных пользователя в переменную состояния
   useEffect(() => {
     api
@@ -107,10 +81,6 @@ function App() {
   function handleCardClick(card) {
     setSelectedCard(card);
   }
-  // Обработчик клика по оверлею
-  function handleOverlayClick(evt) {
-    evt.target === evt.currentTarget && closeAllPopups();
-  }
   // Обработчик добавления лайка
   function handleCardLike(card) {
     // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
@@ -123,7 +93,6 @@ function App() {
       })
       .catch((error) => handleError(error));
   }
-
   // Обработчик удаления карточки
   function handleCardConfirmDelete(card) {
     setIsLoading(true);
@@ -172,7 +141,6 @@ function App() {
       .catch((error) => handleError(error))
       .finally(() => setIsLoading(false));
   }
-
   // Обработчик регистрации нового пользователя
   function handleRegisterNewUser(userData) {
     setIsLoading(true);
@@ -206,7 +174,7 @@ function App() {
     if (localStorage.getItem('token')) {
       const token = localStorage.getItem('token');
       auth
-        .getContent(token)
+        .checkToken(token)
         .then(({ data }) => {
           setUserEmail(data.email);
           setIsLoggedIn(true);
@@ -274,20 +242,12 @@ function App() {
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
-            onOverlayClick={handleOverlayClick}
             isLoading={isLoading}
-          />
-          <InfoTooltip
-            isOpen={isTooltipOpen}
-            isSuccess={isTooltipSuccess}
-            onOverlayClick={handleOverlayClick}
-            onClose={closeAllPopups}
           />
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
-            onOverlayClick={handleOverlayClick}
             isLoading={isLoading}
           />
           <ConfirmDeletePopup
@@ -295,20 +255,19 @@ function App() {
             onClose={closeAllPopups}
             cardToDelete={cardToDelete}
             onConfirmDelete={handleCardConfirmDelete}
-            onOverlayClick={handleOverlayClick}
             isLoading={isLoading}
           />
           <EditAvatarPopup
             onClose={closeAllPopups}
             isOpen={isEditAvatarPopupOpen}
             onUpdateAvatar={handleUpdateAvatar}
-            onOverlayClick={handleOverlayClick}
             isLoading={isLoading}
           />
-          <ImagePopup
-            selectedCard={selectedCard}
+          <ImagePopup selectedCard={selectedCard} onClose={closeAllPopups} />
+          <InfoTooltip
+            isOpen={isTooltipOpen}
+            isSuccess={isTooltipSuccess}
             onClose={closeAllPopups}
-            onOverlayClick={handleOverlayClick}
           />
           <Footer />
         </CurrentUserContext.Provider>

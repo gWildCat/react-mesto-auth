@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useValidation from '../hooks/useValidation';
-import Sign from './Sign';
+import AuthForm from './AuthForm';
 
 const Register = ({ onRegisterNewUser, isLoading }) => {
   // Валидация формы
@@ -17,7 +17,7 @@ const Register = ({ onRegisterNewUser, isLoading }) => {
   }, []);
   return (
     <div className="main">
-      <Sign
+      <AuthForm
         name="sign-up-form"
         title="Регистрация"
         btnTitle={!isLoading ? 'Зарегистрироваться' : 'Регистрация...'}
@@ -50,7 +50,7 @@ const Register = ({ onRegisterNewUser, isLoading }) => {
           value={values.password || ''}
         />
         <span className="form__error-message password-error">{errors.password}</span>
-      </Sign>
+      </AuthForm>
       <p className="main__text">
         Уже зарегистрированы?{' '}
         <Link className="main__link" to="/sign-in">

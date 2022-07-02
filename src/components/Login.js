@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useValidation from '../hooks/useValidation';
-import Sign from './Sign';
+import AuthForm from './AuthForm';
 
 const Login = ({ onLogin, isLoading }) => {
   // Валидация формы
@@ -16,7 +16,7 @@ const Login = ({ onLogin, isLoading }) => {
   }, []);
   return (
     <div className="main">
-      <Sign
+      <AuthForm
         name="sign-up-form"
         title="Вход"
         btnTitle={!isLoading ? 'Войти' : 'Вход...'}
@@ -49,7 +49,7 @@ const Login = ({ onLogin, isLoading }) => {
           value={values.password || ''}
         />
         <span className="form__error-message password-error">{errors.password}</span>
-      </Sign>
+      </AuthForm>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import useValidation from '../hooks/useValidation';
 import PopupWithForm from './PopupWithForm';
 
-const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, onOverlayClick, isLoading }) => {
+const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, isLoading }) => {
   // Подписка на контекст с данными о текущем пользователе
   const currentUser = useContext(CurrentUserContext);
   // Валидация формы
@@ -26,7 +26,6 @@ const EditProfilePopup = ({ isOpen, onClose, onUpdateUser, onOverlayClick, isLoa
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      onOverlayClick={onOverlayClick}
       isValid={isValid}
     >
       <input

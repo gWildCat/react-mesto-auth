@@ -1,4 +1,4 @@
-const Sign = ({ name, title, children, isValid, btnTitle, onSubmit }) => {
+const AuthForm = ({ name, title, children, isValid, btnTitle, onSubmit }) => {
   return (
     <div className="sign">
       <form className="form" name={name} noValidate onSubmit={onSubmit}>
@@ -19,4 +19,4 @@ const Sign = ({ name, title, children, isValid, btnTitle, onSubmit }) => {
   );
 };
 
-export default Sign;
+export default AuthForm;

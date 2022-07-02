@@ -1,4 +1,5 @@
 import React from 'react';
+import Popup from './Popup';
 
 const PopupWithForm = ({
   name,
@@ -8,39 +9,30 @@ const PopupWithForm = ({
   btnTitle,
   children,
   onSubmit,
-  onOverlayClick,
   isValid,
 }) => {
   return (
-    <div
-      className={`popup popup_light popup_type_${name} ${isOpen && 'popup_opened'}`}
-      id="edit-profile"
-      onClick={onOverlayClick}
+    <Popup
+      name={name}
+      isOpen={isOpen}
+      onClose={onClose}
+      containerSelector="popup__container"
     >
-      <div className="popup__container">
-        <form className="form" name={name} noValidate onSubmit={onSubmit}>
-          <h2 className="form__header">{title}</h2>
-          {children}
-          <button
-            className={`${
-              !isValid && 'form__save-button_inactive'
-            } form__save-button form__save-button_theme_light`}
-            title={btnTitle}
-            type="submit"
-            disabled={!isValid}
-          >
-            {btnTitle}
-          </button>
-        </form>
+      <form className="form" name={name} noValidate onSubmit={onSubmit}>
+        <h2 className="form__header">{title}</h2>
+        {children}
         <button
-          className="popup__close-button"
-          title="Закрыть"
-          type="button"
-          aria-label="Закрыть форму"
-          onClick={onClose}
-        ></button>
-      </div>
-    </div>
+          className={`${
+            !isValid && 'form__save-button_inactive'
+          } form__save-button form__save-button_theme_light`}
+          title={btnTitle}
+          type="submit"
+          disabled={!isValid}
+        >
+          {btnTitle}
+        </button>
+      </form>
+    </Popup>
   );
 };
 

@@ -1,14 +1,7 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
-const ConfirmDeletePopup = ({
-  isOpen,
-  onClose,
-  cardToDelete,
-  onConfirmDelete,
-  onOverlayClick,
-  isLoading,
-}) => {
+const ConfirmDeletePopup = ({ isOpen, onClose, cardToDelete, onConfirmDelete, isLoading }) => {
   // Обработчик подтверждения удаления карточки
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -23,7 +16,6 @@ const ConfirmDeletePopup = ({
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
-      onOverlayClick={onOverlayClick}
       isValid={true}
     />
   );

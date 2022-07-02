@@ -1,26 +1,19 @@
 import React from 'react';
+import Popup from './Popup';
 
-const ImagePopup = ({ selectedCard, onClose, onOverlayClick }) => {
+const ImagePopup = ({ selectedCard, onClose }) => {
   return (
-    <div
-      className={`popup popup_dark  ${selectedCard !== null && 'popup_opened'}`}
-      id="view-image"
-      onClick={onOverlayClick}
+    <Popup
+      name="image"
+      isOpen={selectedCard}
+      onClose={onClose}
+      containerSelector="popup__image-container"
     >
-      <div className="popup__image-container">
-        <figure className="popup__figure">
-          <img className="popup__image" src={selectedCard?.link} alt={selectedCard?.name} />
-          <figcaption className="popup__image-caption">{selectedCard?.name}</figcaption>
-        </figure>
-        <button
-          className="popup__close-button"
-          title="Закрыть"
-          type="button"
-          aria-label="Закрыть просмотр"
-          onClick={onClose}
-        ></button>
-      </div>
-    </div>
+      <figure className="popup__figure">
+        <img className="popup__image" src={selectedCard?.link} alt={selectedCard?.name} />
+        <figcaption className="popup__image-caption">{selectedCard?.name}</figcaption>
+      </figure>
+    </Popup>
   );
 };
 

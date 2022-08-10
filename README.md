@@ -28,5 +28,4 @@
 
 ## Ссылка на репозиторий проекта на GitHub:
 
-- [Ссылка на репозиторий](https://github.com/gWildCat/mesto-react)
-- [Ссылка на проект на GitHub Pages](https://gwildcat.github.io/react-mesto-auth/index.html)
+- [Ссылка на репозиторий](https://github.com/malkov-am/mesto-react)
